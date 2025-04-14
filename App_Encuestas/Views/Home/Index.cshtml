@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Crear Encuesta";
+
+}
+
+<!-- Imagen superior -->
+<div class="w-100 text-center py-3">
+    <img src="~/assets/images/LogoAzul.png"
+         alt="Logo de encuesta"
+         class="img-fluid"
+         style="width: 100%; max-width: 180px; height: auto; object-fit: contain;" />
+</div>
+
+<br />
+<br />
+
+<div class="row justify-content-center">
+    <div class="col-xxl-12">
+        <div class="card mt-xxl-n5">
+            <div class="card-body p-4">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="crearEncuesta" role="tabpanel">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-md-8 col-lg-6">
+
+                                <form method="post" asp-action="Crear" asp-controller="Encuesta">
+                                    <div class="mb-3">
+                                        <label for="numeroCaso" class="form-label fw-semibold">Número de Caso</label>
+                                        <input type="text"
+                                               class="form-control form-control-sm"
+                                               id="numeroCaso"
+                                               name="numeroCaso"
+                                               placeholder="Ej: 123456789"
+                                               required />
+                                    </div>
+
+                                    <div class="d-grid mt-4">
+                                        <button type="submit" class="btn btn-primary btn-sm rounded-pill">
+                                            <i class="ri-file-add-line me-1"></i> Generar Encuesta
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet" />
+}

@@ -1,0 +1,207 @@
+﻿@model EncuestaRespuestaModel
+
+<!-- Imagen superior -->
+<div class="w-100 text-center py-3">
+    <img src="~/assets/images/LogoAzul.png"
+         alt="Logo de encuesta"
+         class="img-fluid"
+         style="width: 100%; max-width: 180px; height: auto; object-fit: contain;" />
+</div>
+
+<br />
+<br />
+
+<div class="row">
+    <div class="col-xxl-12">
+        <div class="card mt-xxl-n5">
+            <div class="card-body p-4">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="personalDetails" role="tabpanel">
+                        <div class="row">
+                            <form asp-action="Responder" method="post">
+                                <input type="hidden" asp-for="EncuestaId" />
+
+                                <div class="col-xxl-12">
+                                    @for (int i = 0; i < Model.Preguntas.Count; i++)
+                                    {
+                                        var tipo = Model.Preguntas[i].Tipo;
+                                        var isObservacion = Model.Preguntas[i].Texto.ToLower().Contains("observac");
+
+                                        <div class="col-12 col-sm-6">
+                                            <div class="border rounded p-3 h-100">
+                                                <label class="form-label fw-semibold mb-2 d-block">@Model.Preguntas[i].Texto</label>
+
+                                                <input type="hidden" name="Preguntas[@i].PreguntaId" value="@Model.Preguntas[i].PreguntaId" />
+                                                <input type="hidden" name="Preguntas[@i].Texto" value="@Model.Preguntas[i].Texto" />
+                                                <input type="hidden" name="Preguntas[@i].Tipo" value="@tipo" />
+
+                                                @if (tipo == "Escala")
+                                                {
+                                                    if (i == 0) // NPS
+                                                    {
+                                                        <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                            <option value="">Seleccione</option>
+                                                            <option value="NADA PROBABLE">1 - NADA PROBABLE</option>
+                                                            <option value="POCO PROBABLE">2 - POCO PROBABLE</option>
+                                                            <option value="MEDIO PROBABLE">3 - MEDIO PROBABLE</option>
+                                                            <option value="PROBABLE">4 - PROBABLE</option>
+                                                            <option value="MUY PROBABLE">5 - MUY PROBABLE</option>
+                                                        </select>
+                                                        <small class="text-muted">* Siendo 1 nada probable y 5 muy probable</small>
+                                                    }
+                                                    else if (i == 1 || i == 3) // CSAT y Control Calidad
+                                                    {
+                                                        <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                            <option value="">Seleccione</option>
+                                                            <option value="INSATISFECHO">1 - INSATISFECHO</option>
+                                                            <option value="NADA SATISFECHO">2 - NADA SATISFECHO</option>
+                                                            <option value="POCO SATISFECHO">3 - POCO SATISFECHO</option>
+                                                            <option value="SATISFECHO">4 - SATISFECHO</option>
+                                                            <option value="MUY SATISFECHO">5 - MUY SATISFECHO</option>
+                                                        </select>
+                                                        <small class="text-muted">* Siendo 1 nada satisfecho y 5 muy satisfecho</small>
+                                                    }
+                                                    else if (i == 2) // CES
+                                                    {
+                                                        <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                            <option value="">Seleccione</option>
+                                                            <option value="EXTREMADAMENTE DIFICIL">1 - EXTREMADAMENTE DIFÍCIL</option>
+                                                            <option value="MUY DIFICIL">2 - MUY DIFÍCIL</option>
+                                                            <option value="NI FACIL NI DIFICIL">3 - NI FÁCIL NI DIFÍCIL</option>
+                                                            <option value="MUY FACIL">4 - MUY FÁCIL</option>
+                                                            <option value="EXTREMADAMENTE FACIL">5 - EXTREMADAMENTE FÁCIL</option>
+                                                        </select>
+                                                        <small class="text-muted">* Siendo 1 extremadamente difícil y 5 extremadamente fácil</small>
+                                                    }
+                                                    else if (i == 4) // Pregunta 5 - Evaluación general
+                                                    {
+                                                        <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                            <option value="">Seleccione</option>
+                                                            <option value="MALO">1 - MALO</option>
+                                                            <option value="REGULAR">2 - REGULAR</option>
+                                                            <option value="BUENO">3 - BUENO</option>
+                                                            <option value="MUY BUENO">4 - MUY BUENO</option>
+                                                            <option value="EXCELENTE">5 - EXCELENTE</option>
+                                                        </select>
+                                                    }
+                                                    else // Escala genérica
+                                                    {
+                                                        <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                            <option value="">Seleccione</option>
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                        </select>
+                                                    }
+                                                }
+                                                else if (tipo == "SiNo")
+                                                {
+                                                    <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                        <option value="">Seleccione</option>
+                                                        <option value="SÍ">Sí</option>
+                                                        <option value="NO">No</option>
+                                                    </select>
+                                                }
+                                                else // Texto libre (observación)
+                                                {
+                                                    <div class="input-group flex-nowrap">
+                                                        <input type="text"
+                                                               class="form-control form-control-sm"
+                                                               name="Preguntas[@i].Respuesta"
+                                                               id="respuesta-observacion-@i"
+                                                               placeholder="Respuesta..." />
+
+                                                        @if (isObservacion)
+                                                        {
+                                                            <button type="button"
+                                                                    class="btn btn-outline-secondary btn-sm"
+                                                                    id="btn-mic-@i"
+                                                                    onclick="toggleDictado(@i)"
+                                                                    title="Iniciar dictado"
+                                                                    data-bs-toggle="tooltip">
+                                                                <i id="icon-mic-@i" class="ri-mic-2-line"></i>
+                                                            </button>
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="d-grid mt-4">
+                                    <button type="submit" class="btn btn-success btn-sm rounded-pill">
+                                        <i class="ri-send-plane-2-line"></i> Enviar respuestas
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet" />
+
+    <script>
+        const recognitions = {};
+        const isRecording = {};
+
+        function toggleDictado(index) {
+            const campo = document.getElementById("respuesta-observacion-" + index);
+            const icon = document.getElementById("icon-mic-" + index);
+            const btn = document.getElementById("btn-mic-" + index);
+
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Tu navegador no soporta reconocimiento de voz.");
+                return;
+            }
+
+            if (isRecording[index]) {
+                recognitions[index].stop();
+                return;
+            }
+
+            const recognition = new webkitSpeechRecognition();
+            recognitions[index] = recognition;
+            isRecording[index] = true;
+
+            recognition.lang = "es-ES";
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            icon.className = "ri-loader-4-line text-danger spin";
+            btn.title = "Detener dictado";
+            campo.placeholder = "🎤 Escuchando...";
+
+            recognition.onresult = (event) => {
+                campo.value = event.results[0][0].transcript;
+                campo.placeholder = "Respuesta...";
+            };
+
+            recognition.onerror = (event) => {
+                alert("Error al usar el micrófono: " + event.error);
+            };
+
+            recognition.onend = () => {
+                isRecording[index] = false;
+                icon.className = "ri-mic-2-line";
+                btn.title = "Iniciar dictado";
+            };
+
+            recognition.start();
+        }
+
+     
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            tooltipTriggerList.map(el => new bootstrap.Tooltip(el))
+        });
+    </script>
+}

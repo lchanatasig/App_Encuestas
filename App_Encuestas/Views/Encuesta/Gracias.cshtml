@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Gracias por su respuesta";
+ 
+}
+
+<div class="container mt-5 text-center">
+    <h2 class="text-success fw-bold">¡Gracias por responder la encuesta!</h2>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Verifica si hay mensajes
+        @if (TempData["Mensajes"] != null)
+        {
+            var mensajes = TempData["Mensajes"].ToString().Split("||");
+
+            <text>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Respuestas registradas',
+                        html: `<ul style="text-align:left;">` +
+                    @Html.Raw(string.Join("+", mensajes.Select(m => $"'<li>{m}</li>'"))) +
+                            `</ul>`,
+                        confirmButtonText: 'Aceptar',
+                        customClass: {
+                            popup: 'rounded-3'
+                        }
+                    });
+            </text>
+        }
+    </script>
+}

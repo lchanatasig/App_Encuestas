@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Encuesta Generada";
+
+}
+
+<!-- Imagen superior -->
+<div class="w-100 text-center py-3">
+    <img src="~/assets/images/LogoAzul.png"
+         alt="Logo de encuesta"
+         class="img-fluid"
+         style="width: 100%; max-width: 180px; height: auto; object-fit: contain;" />
+</div>
+
+<br />
+<br />
+
+<div class="row justify-content-center">
+    <div class="col-xxl-12">
+        <div class="card mt-xxl-n5">
+            <div class="card-body p-4">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="linkGenerado" role="tabpanel">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-md-8 col-lg-6">
+
+                                <h5 class="mb-3 text-success">
+                                    <i class="ri-checkbox-circle-line me-2"></i> Encuesta generada exitosamente
+                                </h5>
+
+                                <label class="form-label fw-semibold">Comparte este enlace con el cliente</label>
+
+                                <div class="input-group mb-3">
+                                    <input type="text" id="linkEncuesta" class="form-control form-control-sm" readonly value="@ViewBag.Link">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="copiarLink()" title="Copiar al portapapeles" data-bs-toggle="tooltip">
+                                        <i class="ri-clipboard-line"></i>
+                                    </button>
+                                    <a class="btn btn-outline-success btn-sm"
+                                       target="_blank"
+                                       href="https://wa.me/?text=@(System.Net.WebUtility.UrlEncode(ViewBag.Link))"
+                                       title="Compartir por WhatsApp"
+                                       data-bs-toggle="tooltip">
+                                        <i class="ri-whatsapp-line"></i>
+                                    </a>
+                                </div>
+
+                                <div class="d-grid mt-4">
+                                    <a class="btn btn-primary btn-sm rounded-pill"
+                                       asp-controller="Encuesta"
+                                       asp-action="Responder"
+                                       asp-route-id="@ViewBag.EncuestaId">
+                                        <i class="ri-edit-2-line me-1"></i> Contestar ahora
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet" />
+
+    <script>
+        function copiarLink() {
+            const input = document.getElementById("linkEncuesta");
+            input.select();
+            input.setSelectionRange(0, 99999); // Para móviles
+            navigator.clipboard.writeText(input.value)
+                .then(() => alert("¡Link copiado al portapapeles!"))
+                .catch(err => alert("Error al copiar: " + err));
+        }
+
+        // Inicializar tooltips de Bootstrap
+        document.addEventListener('DOMContentLoaded', () => {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            tooltipTriggerList.map(el => new bootstrap.Tooltip(el))
+        });
+    </script>
+}
