@@ -1,6 +1,7 @@
 ﻿@{
-    ViewBag.Title = "Crear Encuesta";
-
+    ViewData["Title"] = "Crear Encuesta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var aseguradoras = ViewBag.Aseguradoras as List<App_Encuestas.Models.Aseguradora>;
 }
 
 <!-- Imagen superior -->
@@ -25,6 +26,17 @@
 
                                 <form method="post" asp-action="Crear" asp-controller="Encuesta">
                                     <div class="mb-3">
+                                        <label for="aseguradoraId" class="form-label fw-semibold">Seleccione una Aseguradora</label>
+                                        <select class="form-select form-select-sm" id="aseguradoraId" name="aseguradoraId" required onchange="toggleCasoInput()">
+                                            <option value="">-- Seleccione --</option>
+                                            @foreach (var a in aseguradoras)
+                                            {
+                                                <option value="@a.AseguradoraId">@a.Nombre</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3" id="numeroCasoGroup" style="display: none;">
                                         <label for="numeroCaso" class="form-label fw-semibold">Número de Caso</label>
                                         <input type="text"
                                                class="form-control form-control-sm"
@@ -52,4 +64,17 @@
 
 @section Scripts {
     <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet" />
+
+    <script>
+        function toggleCasoInput() {
+            const select = document.getElementById("aseguradoraId");
+            const casoGroup = document.getElementById("numeroCasoGroup");
+
+            if (select.value !== "") {
+                casoGroup.style.display = "block";
+            } else {
+                casoGroup.style.display = "none";
+            }
+        }
+    </script>
 }

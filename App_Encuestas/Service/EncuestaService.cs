@@ -22,7 +22,7 @@ namespace App_Encuestas.Service
         /// <param name="numeroCaso"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public int CrearEncuesta(string numeroCaso, out string token)
+        public int CrearEncuesta(string numeroCaso, int aseguradoraId, out string token)
         {
             int encuestaId = 0;
             token = "";
@@ -32,6 +32,7 @@ namespace App_Encuestas.Service
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@numero_caso", numeroCaso);
+            cmd.Parameters.AddWithValue("@aseguradora_id", aseguradoraId);
 
             var tokenParam = new SqlParameter("@token", SqlDbType.NVarChar, 100)
             {
@@ -48,7 +49,7 @@ namespace App_Encuestas.Service
             conn.Open();
             cmd.ExecuteNonQuery();
 
-            token = tokenParam.Value.ToString();
+            token = tokenParam.Value?.ToString();
             encuestaId = (int)idParam.Value;
 
             return encuestaId;
@@ -121,5 +122,26 @@ namespace App_Encuestas.Service
             var encuesta = _context.Encuesta.FirstOrDefault(e => e.Token == token);
             return encuesta?.EncuestaId ?? 0;
         }
+
+
+        public DataTable ObtenerReportePorRango(DateTime fechaInicio, DateTime fechaFin)
+        {
+            var tabla = new DataTable();
+
+            using var conn = _context.Database.GetDbConnection() as SqlConnection;
+            using var cmd = new SqlCommand("sp_ObtenerRespuestasPivot", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+            cmd.Parameters.AddWithValue("@fechaFin", fechaFin);
+
+            conn.Open();
+
+            using var reader = cmd.ExecuteReader();
+            tabla.Load(reader);
+
+            return tabla;
+        }
+
     }
 }

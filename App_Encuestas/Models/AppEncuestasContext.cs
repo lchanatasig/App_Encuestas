@@ -15,6 +15,8 @@ public partial class AppEncuestasContext : DbContext
     {
     }
 
+    public virtual DbSet<Aseguradora> Aseguradoras { get; set; }
+
     public virtual DbSet<Encuestum> Encuesta { get; set; }
 
     public virtual DbSet<Pregunta> Preguntas { get; set; }
@@ -27,6 +29,21 @@ public partial class AppEncuestasContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Aseguradora>(entity =>
+        {
+            entity.HasKey(e => e.AseguradoraId).HasName("PK__asegurad__A3D1452AD76AB7B3");
+
+            entity.ToTable("aseguradora");
+
+            entity.Property(e => e.AseguradoraId).HasColumnName("aseguradora_id");
+            entity.Property(e => e.Estado)
+                .HasDefaultValue(true)
+                .HasColumnName("estado");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(150)
+                .HasColumnName("nombre");
+        });
+
         modelBuilder.Entity<Encuestum>(entity =>
         {
             entity.HasKey(e => e.EncuestaId).HasName("PK__encuesta__8F3A1FC947EAE62B");
@@ -36,6 +53,7 @@ public partial class AppEncuestasContext : DbContext
             entity.HasIndex(e => e.Token, "UQ__encuesta__CA90DA7A7B75D382").IsUnique();
 
             entity.Property(e => e.EncuestaId).HasColumnName("encuesta_id");
+            entity.Property(e => e.AseguradoraId).HasColumnName("aseguradora_id");
             entity.Property(e => e.FechaCreacion)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -43,9 +61,16 @@ public partial class AppEncuestasContext : DbContext
             entity.Property(e => e.NumeroCaso)
                 .HasMaxLength(50)
                 .HasColumnName("numero_caso");
+            entity.Property(e => e.Respondido)
+                .HasDefaultValue(false)
+                .HasColumnName("respondido");
             entity.Property(e => e.Token)
                 .HasMaxLength(100)
                 .HasColumnName("token");
+
+            entity.HasOne(d => d.Aseguradora).WithMany(p => p.Encuesta)
+                .HasForeignKey(d => d.AseguradoraId)
+                .HasConstraintName("FK_Encuesta_Aseguradora");
         });
 
         modelBuilder.Entity<Pregunta>(entity =>

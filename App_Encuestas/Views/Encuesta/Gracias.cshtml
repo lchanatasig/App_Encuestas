@@ -1,34 +1,37 @@
 ﻿@{
     ViewBag.Title = "Gracias por su respuesta";
- 
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5 text-center">
-    <h2 class="text-success fw-bold">¡Gracias por responder la encuesta!</h2>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-sm rounded text-center">
+                <div class="card-body py-5">
+                    <div class="text-success mb-3">
+                        <i class="ri-checkbox-circle-line" style="font-size: 48px;"></i>
+                    </div>
+                    <h4 class="fw-bold">¡Gracias por responder la encuesta!</h4>
+                    <p class="text-muted mt-2">Tus respuestas han sido registradas correctamente.</p>
+
+                    <div class="mt-4">
+                        <a href="/" class="btn btn-outline-primary btn-sm rounded-pill">
+                            <i class="ri-home-4-line me-1"></i> Volver al inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet" />
+      
 
     <script>
-        // Verifica si hay mensajes
-        @if (TempData["Mensajes"] != null)
-        {
-            var mensajes = TempData["Mensajes"].ToString().Split("||");
-
-            <text>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Respuestas registradas',
-                        html: `<ul style="text-align:left;">` +
-                    @Html.Raw(string.Join("+", mensajes.Select(m => $"'<li>{m}</li>'"))) +
-                            `</ul>`,
-                        confirmButtonText: 'Aceptar',
-                        customClass: {
-                            popup: 'rounded-3'
-                        }
-                    });
-            </text>
-        }
+              window.location.hash="no-back-button";
+        window.location.hash="Again-No-back-button";//esta linea es necesaria para chrome
+        window.onhashchange=function(){window.location.hash="no-back-button";}
     </script>
 }

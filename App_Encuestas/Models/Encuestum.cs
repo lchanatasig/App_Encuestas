@@ -13,5 +13,11 @@ public partial class Encuestum
 
     public string? Token { get; set; }
 
+    public bool? Respondido { get; set; }
+
+    public int? AseguradoraId { get; set; }
+
+    public virtual Aseguradora? Aseguradora { get; set; }
+
     public virtual ICollection<Respuestum> Respuesta { get; set; } = new List<Respuestum>();
 }

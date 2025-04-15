@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Encuesta no disponible";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-danger shadow-sm rounded text-center">
+                <div class="pt-4">
+                    <img src="~/assets/images/Error401.png" alt="Encuesta no disponible"
+                         style="width: 220px; object-fit: contain;" class="img-fluid" />
+                </div>
+
+                <div class="card-header bg-danger text-white mt-3">
+                    <h5 class="mb-0">
+                        <i class="ri-error-warning-line me-2"></i> Encuesta no disponible
+                    </h5>
+                </div>
+
+                <div class="card-body">
+                    <p class="fs-6 text-muted mb-3">
+                        Este enlace ya fue utilizado o la encuesta que intenta acceder no existe.
+                    </p>
+
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary btn-sm rounded-pill">
+                        <i class="ri-arrow-left-line me-1"></i> Volver al inicio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet" />
+
+    <script>
+        history.pushState(null, "", location.href);
+        window.onpopstate = function () {
+            history.pushState(null, "", location.href);
+        };
+                window.location.hash="no-back-button";
+        window.location.hash="Again-No-back-button";//esta linea es necesaria para chrome
+        window.onhashchange=function(){window.location.hash="no-back-button";}
+    </script>
+}

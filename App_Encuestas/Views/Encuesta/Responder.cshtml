@@ -27,9 +27,9 @@
                                         var tipo = Model.Preguntas[i].Tipo;
                                         var isObservacion = Model.Preguntas[i].Texto.ToLower().Contains("observac");
 
-                                        <div class="col-12 col-sm-6">
-                                            <div class="border rounded p-3 h-100">
-                                                <label class="form-label fw-semibold mb-2 d-block">@Model.Preguntas[i].Texto</label>
+                                        <div class="col-12 col-sm-6 mb-4">
+                                            <div class="border rounded p-4 h-100">
+                                                <label class="form-label fw-semibold mb-3 d-block">@Model.Preguntas[i].Texto</label>
 
                                                 <input type="hidden" name="Preguntas[@i].PreguntaId" value="@Model.Preguntas[i].PreguntaId" />
                                                 <input type="hidden" name="Preguntas[@i].Texto" value="@Model.Preguntas[i].Texto" />
@@ -39,7 +39,7 @@
                                                 {
                                                     if (i == 0) // NPS
                                                     {
-                                                        <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                        <select class="form-select" name="Preguntas[@i].Respuesta" required>
                                                             <option value="">Seleccione</option>
                                                             <option value="NADA PROBABLE">1 - NADA PROBABLE</option>
                                                             <option value="POCO PROBABLE">2 - POCO PROBABLE</option>
@@ -51,7 +51,7 @@
                                                     }
                                                     else if (i == 1 || i == 3) // CSAT y Control Calidad
                                                     {
-                                                        <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                        <select class="form-select" name="Preguntas[@i].Respuesta" required>
                                                             <option value="">Seleccione</option>
                                                             <option value="INSATISFECHO">1 - INSATISFECHO</option>
                                                             <option value="NADA SATISFECHO">2 - NADA SATISFECHO</option>
@@ -63,7 +63,7 @@
                                                     }
                                                     else if (i == 2) // CES
                                                     {
-                                                        <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                        <select class="form-select" name="Preguntas[@i].Respuesta" required>
                                                             <option value="">Seleccione</option>
                                                             <option value="EXTREMADAMENTE DIFICIL">1 - EXTREMADAMENTE DIFÍCIL</option>
                                                             <option value="MUY DIFICIL">2 - MUY DIFÍCIL</option>
@@ -73,9 +73,9 @@
                                                         </select>
                                                         <small class="text-muted">* Siendo 1 extremadamente difícil y 5 extremadamente fácil</small>
                                                     }
-                                                    else if (i == 4) // Pregunta 5 - Evaluación general
+                                                    else if (i == 4) // Evaluación general
                                                     {
-                                                        <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                        <select class="form-select" name="Preguntas[@i].Respuesta" required>
                                                             <option value="">Seleccione</option>
                                                             <option value="MALO">1 - MALO</option>
                                                             <option value="REGULAR">2 - REGULAR</option>
@@ -84,9 +84,9 @@
                                                             <option value="EXCELENTE">5 - EXCELENTE</option>
                                                         </select>
                                                     }
-                                                    else // Escala genérica
+                                                    else
                                                     {
-                                                        <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                        <select class="form-select" name="Preguntas[@i].Respuesta" required>
                                                             <option value="">Seleccione</option>
                                                             <option value="1">1</option>
                                                             <option value="2">2</option>
@@ -98,17 +98,17 @@
                                                 }
                                                 else if (tipo == "SiNo")
                                                 {
-                                                    <select class="form-select form-select-sm" name="Preguntas[@i].Respuesta" required>
+                                                    <select class="form-select" name="Preguntas[@i].Respuesta" required>
                                                         <option value="">Seleccione</option>
                                                         <option value="SÍ">Sí</option>
                                                         <option value="NO">No</option>
                                                     </select>
                                                 }
-                                                else // Texto libre (observación)
+                                                else
                                                 {
                                                     <div class="input-group flex-nowrap">
                                                         <input type="text"
-                                                               class="form-control form-control-sm"
+                                                               class="form-control"
                                                                name="Preguntas[@i].Respuesta"
                                                                id="respuesta-observacion-@i"
                                                                placeholder="Respuesta..." />
@@ -116,7 +116,7 @@
                                                         @if (isObservacion)
                                                         {
                                                             <button type="button"
-                                                                    class="btn btn-outline-secondary btn-sm"
+                                                                    class="btn btn-outline-secondary"
                                                                     id="btn-mic-@i"
                                                                     onclick="toggleDictado(@i)"
                                                                     title="Iniciar dictado"
@@ -132,7 +132,7 @@
                                 </div>
 
                                 <div class="d-grid mt-4">
-                                    <button type="submit" class="btn btn-success btn-sm rounded-pill">
+                                    <button type="submit" class="btn btn-success rounded-pill">
                                         <i class="ri-send-plane-2-line"></i> Enviar respuestas
                                     </button>
                                 </div>
@@ -197,11 +197,20 @@
             recognition.start();
         }
 
-     
 
         document.addEventListener('DOMContentLoaded', () => {
-            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-            tooltipTriggerList.map(el => new bootstrap.Tooltip(el))
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(el => new bootstrap.Tooltip(el));
         });
+
+                // Bloquear navegación hacia atrás (impedir volver a /Crear)
+        history.pushState(null, "", location.href);
+        window.onpopstate = function () {
+            history.pushState(null, "", location.href);
+        };
+
+                window.location.hash="no-back-button";
+        window.location.hash="Again-No-back-button";//esta linea es necesaria para chrome
+        window.onhashchange=function(){window.location.hash="no-back-button";}
     </script>
 }
