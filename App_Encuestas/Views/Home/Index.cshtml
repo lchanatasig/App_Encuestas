@@ -3,7 +3,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var aseguradoras = ViewBag.Aseguradoras as List<App_Encuestas.Models.Aseguradora>;
 }
-
+<br />
+<br />
 <!-- Imagen superior -->
 <div class="w-100 text-center py-3">
     <img src="~/assets/images/LogoAzul.png"
@@ -28,15 +29,18 @@
                                     <div class="mb-3">
                                         <label for="aseguradoraId" class="form-label fw-semibold">Seleccione una Aseguradora</label>
                                         <select class="form-select form-select-sm" id="aseguradoraId" name="aseguradoraId" required onchange="toggleCasoInput()">
-                                            <option value="">-- Seleccione --</option>
+                                            @{
+                                                var primera = true;
+                                            }
                                             @foreach (var a in aseguradoras)
                                             {
-                                                <option value="@a.AseguradoraId">@a.Nombre</option>
+                                                <option value="@a.AseguradoraId" selected>@a.Nombre</option>
+                                                primera = false;
                                             }
                                         </select>
                                     </div>
 
-                                    <div class="mb-3" id="numeroCasoGroup" style="display: none;">
+                                    <div class="mb-3" id="numeroCasoGroup">
                                         <label for="numeroCaso" class="form-label fw-semibold">Número de Caso</label>
                                         <input type="text"
                                                class="form-control form-control-sm"
@@ -76,5 +80,10 @@
                 casoGroup.style.display = "none";
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleCasoInput();
+            document.getElementById("numeroCaso").focus();
+        });
     </script>
 }

@@ -2,7 +2,8 @@
     ViewData["Title"] = "Descargar Reporte";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<br />
+<br />
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
@@ -12,6 +13,7 @@
                         <i class="ri-download-2-line me-2"></i> Descargar Reporte por Fecha
                     </h5>
                 </div>
+
                 <div class="card-body">
                     <form asp-action="ExportarExcel" asp-controller="Encuesta" method="post">
                         <div class="mb-3">

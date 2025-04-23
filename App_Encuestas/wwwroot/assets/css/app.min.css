@@ -369,24 +369,24 @@
 }
 
 [data-layout=horizontal] .page-content {
-    padding: calc(45px + 1.5rem) calc(1.5rem * .5) 60px calc(1.5rem * .5)
-}
+/*    padding: calc(45px + 1.5rem) calc(1.5rem * .5) 60px calc(1.5rem * .5)
+*/}
 
 @media (min-width:1024.1px) {
     [data-layout=horizontal] .page-content {
-        margin-top: 70px
+        margin-top: 1px
     }
 }
 
 @media (max-width:1024.1px) {
     [data-layout=horizontal] .page-content {
-        padding: calc(45px + 1.5rem * 1.8) calc(1.5rem * .5) 60px calc(1.5rem * .5)
-    }
+/*        padding: calc(45px + 1.5rem * 1.8) calc(1.5rem * .5) 60px calc(1.5rem * .5)
+*/    }
 }
 
 @media (min-width:1024.1px) {
     [data-layout=horizontal][data-layout-width=boxed] .page-content {
-        min-height: calc(100vh - 130px)
+        /*min-height: calc(100vh - 130px)*/
     }
 }
 
@@ -542,7 +542,7 @@
 }
 
 .page-content {
-    padding: calc(70px + 1.5rem) calc(1.5rem * .5) 60px calc(1.5rem * .5);
+    padding: calc(10px + 1.5rem) calc(1.5rem * .5) 10px calc(1.5rem * .5);
     background-image: url(../images/fondo.jpg);
 }
 
@@ -1546,8 +1546,8 @@
 
     [data-layout=horizontal] .container-fluid,
     [data-layout=horizontal] .layout-width {
-        max-width: 90%;
-        margin: 0 auto
+        max-width: 100%;
+        margin: 0 
     }
 
     [data-layout=horizontal] .topnav-hamburger {

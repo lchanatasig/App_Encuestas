@@ -1,6 +1,5 @@
 ﻿@{
     ViewBag.Title = "Encuesta Generada";
-
 }
 
 <!-- Imagen superior -->
@@ -41,7 +40,21 @@
                                        data-bs-toggle="tooltip">
                                         <i class="ri-whatsapp-line"></i>
                                     </a>
+                                    <button type="button"
+                                            class="btn btn-outline-info btn-sm"
+                                            onclick="generarQR()"
+                                            title="Generar código QR"
+                                            data-bs-toggle="tooltip">
+                                        <i class="ri-qr-code-line"></i>
+                                    </button>
                                 </div>
+
+                                <div class="text-center mt-3" id="qrContainer" style="display:none;">
+                                    <p class="fw-semibold">Escanea este código QR:</p>
+                                    <canvas id="qrcodeCanvas"></canvas>
+                                </div>
+
+                                <img id="logoQR" src="~/assets/images/Icono_Blanco.png" style="display:none;" />
 
                                 <div class="d-grid mt-4">
                                     <a class="btn btn-primary btn-sm rounded-pill"
@@ -63,6 +76,7 @@
 
 @section Scripts {
     <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
 
     <script>
         function copiarLink() {
@@ -74,19 +88,64 @@
                 .catch(err => alert("Error al copiar: " + err));
         }
 
-        // Inicializar tooltips de Bootstrap
+        function generarQR() {
+            const qrContainer = document.getElementById("qrContainer");
+            const canvas = document.getElementById("qrcodeCanvas");
+            const link = document.getElementById("linkEncuesta").value;
+            const logo = document.getElementById("logoQR");
+
+            qrContainer.style.display = "block";
+
+            QRCode.toCanvas(canvas, link, {
+                width: 200,
+                margin: 1,
+                color: {
+                    dark: '#005B95',
+                      // dark: '#000000',
+                    light: '#ffffff'
+                }
+            }, function (error) {
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+
+                if (!logo.complete) {
+                    logo.onload = () => insertarLogo(canvas, logo);
+                } else {
+                    insertarLogo(canvas, logo);
+                }
+            });
+        }
+
+        function insertarLogo(canvas, logoImg) {
+            const ctx = canvas.getContext("2d");
+            const canvasSize = canvas.width;
+            const logoSize = canvasSize * 0.25;
+
+            ctx.drawImage(
+                logoImg,
+                (canvasSize - logoSize) / 2,
+                (canvasSize - logoSize) / 2,
+                logoSize,
+                logoSize
+            );
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
             tooltipTriggerList.map(el => new bootstrap.Tooltip(el))
         });
 
-           history.pushState(null, "", location.href);
+        history.pushState(null, "", location.href);
         window.onpopstate = function () {
             history.pushState(null, "", location.href);
         };
 
-                window.location.hash="no-back-button";
-        window.location.hash="Again-No-back-button";//esta linea es necesaria para chrome
-        window.onhashchange=function(){window.location.hash="no-back-button";}
+        window.location.hash = "no-back-button";
+        window.location.hash = "Again-No-back-button";
+        window.onhashchange = function () {
+            window.location.hash = "no-back-button";
+        };
     </script>
 }
